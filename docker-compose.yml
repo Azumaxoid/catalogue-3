@@ -1,0 +1,26 @@
+services:
+  catalogue:
+    build:
+      context: .
+      args:
+        - COMMIT_SHA='commit_sha'
+        - RELEASE_TAG='dev'
+    image: azumax/catalogue-3:test
+    container_name: "catalogue"
+    environment:
+      - NEW_RELIC_APP_NAME=local_catalogue-3
+      - NEW_RELIC_LICENSE_KEY=
+      - NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true
+      - NEW_RELIC_INFINITE_TRACING_TRACE_OBSERVER_HOST=
+      - DB_HOST=catalogue-db-3
+      - RAILS_LOG_TO_STDOUT=true
+    ports:
+      - "3000:3000"
+  catalogue-db-3:
+    image: azumax/catalogue-db-3:test
+    container_name: "catalogue-db-3"
+    environment:
+      - MYSQL_ROOT_PASSWORD=fake_password
+      - MYSQL_DATABASE=socksdb
+    ports:
+      - "3306:3306"
